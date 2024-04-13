@@ -1,0 +1,56 @@
+@charset "utf-8";
+$font-path: "../assets/fonts/";
+
+@font-face {
+    font-family: SpaceMono-Regular;
+    src:
+        local(SpaceMono-Regular),
+        url(#{$font-path}SpaceMono-Regular.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: Raleway-Regular;
+    src:
+        local(Raleway-Regular),
+        url(#{$font-path}Raleway-Regular.woff2) format("woff2"),
+        url(#{$font-path}Raleway-Regular.woff) format("woff"),
+        url(#{$font-path}Raleway-Regular.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: Raleway-Medium;
+    src:
+        local(Raleway-Medium),
+        url(#{$font-path}Raleway-Medium.woff2) format("woff2"),
+        url(#{$font-path}Raleway-Medium.woff) format("woff"),
+        url(#{$font-path}Raleway-Medium.ttf) format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: Raleway-Bold;
+    src:
+        local(Raleway-Bold),
+        url(#{$font-path}Raleway-Bold.woff2) format("woff2"),
+        url(#{$font-path}Raleway-Bold.woff) format("woff"),
+        url(#{$font-path}Raleway-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+$primary: #c7522a;
+$link: #008585;
+$text: #ffffff;
+$title-color: #ffffff;
+$background: #333333;
+
+@import "../../node_modules/bulma/bulma.scss";

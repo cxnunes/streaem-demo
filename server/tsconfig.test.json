@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "compileOnSave": false,
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "resolveJsonModule": true
+    },
+    "include": ["**/__tests__/**/*"],
+    "exclude": ["node_modules"]
+}
