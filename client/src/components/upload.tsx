@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import axios from "axios";
+import { BACKEND_URL } from "../services/constants";
 
-export const Upload = () => {
+export type UploadProps = {
+    image: string;
+    setImage: (fileName: string) => void;
+};
+
+export const Upload: FC<UploadProps> = ({ image, setImage }) => {
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
@@ -12,6 +18,12 @@ export const Upload = () => {
         }
     };
 
+    useEffect(() => {
+        if (file) {
+            onUpload();
+        }
+    }, [file]);
+
     const onUpload = async () => {
         if (file) {
             setUploading(true);
@@ -21,11 +33,12 @@ export const Upload = () => {
             formData.append("image", file);
 
             try {
-                await axios.post("http://localhost:3001/api/image/upload", formData, {
+                const result = await axios.post(`${BACKEND_URL}/api/image/upload`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }
                 });
+                setImage(result.data.filename);
             } catch (error: any) {
                 setUploadError(error.message);
             } finally {
@@ -35,13 +48,31 @@ export const Upload = () => {
     };
 
     return (
-        <div>
-            <h1>Upload</h1>
-            <input type="file" onChange={onFileChange} />
-            <button onClick={onUpload} disabled={uploading}>
-                {uploading ? "Uploading..." : "Upload"}
-            </button>
-            {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
+        <div className="columns mt-4 mb-4">
+            <div className="column is-6">
+                <div className="file has-name is-boxed">
+                    <label className="file-label">
+                        <input
+                            className="file-input"
+                            type="file"
+                            name="image"
+                            onChange={onFileChange}
+                        />
+                        <span className="file-cta">
+                            <span className="file-label"> Choose a image.. </span>
+                        </span>
+                        <span className="file-name">{file?.name}</span>
+                    </label>
+                    {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
+                </div>
+            </div>
+            <div className="column is-6">
+                {image && (
+                    <figure className="image is-128x128">
+                        <img src={`${BACKEND_URL}/${image}`} />
+                    </figure>
+                )}
+            </div>
         </div>
     );
 };

@@ -1,9 +1,23 @@
 import React from "react";
 import { IProduct } from "../@types/product";
+import { BACKEND_URL } from "../services/constants";
 
-export const Product = ({ product }: { product: IProduct }) => {
+export const Product = ({
+    product,
+    onEdit
+}: {
+    product: IProduct;
+    onEdit: (product: IProduct) => void;
+}) => {
     return (
         <div className="card has-background-grey-dark">
+            {product.image && (
+                <div className="card-image">
+                    <figure className="image is-4by3">
+                        <img src={`${BACKEND_URL}/${product.image}`} alt="Placeholder" />
+                    </figure>
+                </div>
+            )}
             <div className="card-content">
                 <div className="media">
                     <div className="media-content">
@@ -18,7 +32,9 @@ export const Product = ({ product }: { product: IProduct }) => {
                             <p className="subtitle mt-2">{product.price} €</p>
                         </div>
                         <div className="column is-6">
-                            <button className="button is-primary">Edit</button>
+                            <button className="button is-primary" onClick={() => onEdit(product)}>
+                                Edit
+                            </button>
                         </div>
                     </div>
                 </div>

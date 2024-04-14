@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "run-products": "docker run --rm --name mpd -p 4001:4001 garryturk/mock-product-data",
+        "start:products": "docker run --rm --name mpd -p 4001:4001 garryturk/mock-product-data",
         "run-server": "cd server && npm run dev",
         "run-client": "cd client && npm run dev",
         "start": "concurrently -k -c auto \"npm:run-*\""
@@ -13,7 +13,6 @@
     "author": "cxnunes",
     "license": "ISC",
     "devDependencies": {
-        "@types/cors": "^2.8.17",
         "concurrently": "^8.2.2",
         "prettier": "^3.2.5"
     }
