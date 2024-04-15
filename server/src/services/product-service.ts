@@ -8,7 +8,7 @@ export interface IProductServiceDeps {
 export const productService = (deps: IProductServiceDeps) => {
     return {
         createProduct: async (item: IProductCatalogItem) => {
-            const product: IProduct = {
+            const product: Omit<IProduct, "image"> = {
                 id: Math.random().toString(36),
                 category: item.category,
                 name: item.name,

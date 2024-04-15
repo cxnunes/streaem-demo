@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test:watch": "jest . --watch --verbose --logHeapUsage --detectOpenHandles --runInBand --debug",
+        "test": "STOP_LOGGING=true jest . --verbose --silent --coverage",
         "dev": "ts-node-dev --respawn --transpile-only --exit-child --watch src src/index.ts | pino-pretty -c"
     },
     "author": "cxnunes",
@@ -19,9 +20,14 @@
     "devDependencies": {
         "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
+        "@types/jest": "^29.5.12",
         "@types/multer": "^1.4.11",
         "@types/node": "^20.12.7",
+        "@types/supertest": "^6.0.2",
+        "jest": "^29.7.0",
         "pino-pretty": "^11.0.0",
+        "supertest": "^6.3.4",
+        "ts-jest": "^29.1.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.4.5"
     }

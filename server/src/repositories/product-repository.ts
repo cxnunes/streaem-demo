@@ -3,7 +3,7 @@ import { IProduct } from "../@types/product";
 const storage: IProduct[] = [];
 
 export interface IProductRepository {
-    createProduct(product: IProduct): Promise<IProduct>;
+    createProduct(product: Omit<IProduct, "image">): Promise<IProduct>;
     getProduct(id: string): Promise<IProduct | undefined>;
     getProducts(): Promise<IProduct[]>;
     updateProduct(id: string, product: IProduct): Promise<IProduct>;
