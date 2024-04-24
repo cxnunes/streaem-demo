@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { IProduct } from "../@types/product";
 import { updateProduct } from "../services/product";
 import { Upload } from "./upload";
@@ -9,13 +9,75 @@ export type Props = {
 };
 
 export const EditProduct: FC<Props> = ({ product, refreshProducts }) => {
-    const [name, setName] = useState(product.name);
-    const [description, setDescription] = useState(product.description);
-    const [price, setPrice] = useState(product.price);
-    const [category, setCategory] = useState(product.category);
-    const [image, setImage] = useState(product.image);
+    const [name, setName] = useState<string | null>(product.name);
+    const [description, setDescription] = useState<string | null>(product.description);
+    const [price, setPrice] = useState<number | null>(product.price);
+    const [category, setCategory] = useState<string | null>(product.category);
+    const [image, setImage] = useState<string | null>(product.image);
+
+    useEffect(() => {
+        setName(null);
+        setDescription(null);
+        setPrice(null);
+        setCategory(null);
+        setImage(null);
+    }, []);
+
+    useEffect(() => {
+        setName(product.name);
+        setDescription(product.description);
+        setPrice(product.price);
+        setCategory(product.category);
+        setImage(product.image);
+    }, [product]);
+
+    const [errors, setErrors] = useState<string[]>([]);
+
+    const validateName = (name: string) => name.length > 0;
+
+    const validateCategory = (category: string) =>
+        ["Electronics", "Clothing", "Books"].includes(category);
+
+    const validateDescription = (description: string) =>
+        description.length > 0 && description.length < 1000;
+
+    const onChangeName = (name: string) => {
+        if (!validateName(name)) {
+            setErrors((prev) => [...prev, "Name is required"]);
+            return;
+        }
+        setName(name);
+    };
+
+    const onChangeCategory = (category: string) => {
+        if (!validateCategory(category)) {
+            setErrors((prev) => [...prev, "Invalid category"]);
+            return;
+        }
+        setCategory(category);
+    };
+
+    const onChangeDescription = (description: string) => {
+        if (!validateDescription(description)) {
+            setErrors((prev) => [...prev, "Description must be between 1 and 1000 characters"]);
+            return;
+        }
+        setDescription(description);
+    };
+
+    const onChangePrice = (price: number) => {
+        setPrice(price);
+        if (price < 0 || price > 500) {
+            setErrors((prev) => [...prev, "Price must be greater than 0 and less than 500"]);
+            return;
+        }
+    };
 
     const handleUpdateProduct = async () => {
+        if (!name || !category || !description || !price || !image) {
+            setErrors((prev) => [...prev, "All fields are required"]);
+            return;
+        }
         await updateProduct({
             ...product,
             name,
@@ -44,7 +106,7 @@ export const EditProduct: FC<Props> = ({ product, refreshProducts }) => {
                             type="text"
                             placeholder="Name"
                             defaultValue={product.name}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) => onChangeName(e.target.value)}
                         />
                     </div>
                 </div>
@@ -56,7 +118,7 @@ export const EditProduct: FC<Props> = ({ product, refreshProducts }) => {
                             type="text"
                             placeholder="Category"
                             defaultValue={product.category}
-                            onChange={(e) => setCategory(e.target.value)}
+                            onChange={(e) => onChangeCategory(e.target.value)}
                         />
                     </div>
                 </div>
@@ -67,7 +129,7 @@ export const EditProduct: FC<Props> = ({ product, refreshProducts }) => {
                             className="textarea"
                             placeholder="Description"
                             defaultValue={product.description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => onChangeDescription(e.target.value)}
                         />
                     </div>
                 </div>
@@ -79,7 +141,7 @@ export const EditProduct: FC<Props> = ({ product, refreshProducts }) => {
                             type="number"
                             placeholder="Price"
                             defaultValue={product.price}
-                            onChange={(e) => setPrice(Number(e.target.value))}
+                            onChange={(e) => onChangePrice(Number(e.target.value))}
                         />
                     </div>
                 </div>
@@ -91,6 +153,13 @@ export const EditProduct: FC<Props> = ({ product, refreshProducts }) => {
                         <button className="button is-primary">Submit</button>
                     </div>
                 </div>
+                {errors.length > 0 && (
+                    <div className="notification is-danger mt-2">
+                        {errors.map((error, idx) => (
+                            <p key={idx}>{error}</p>
+                        ))}
+                    </div>
+                )}
             </form>
         </div>
     );

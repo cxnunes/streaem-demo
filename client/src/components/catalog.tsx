@@ -19,21 +19,21 @@ export const Catalog = () => {
 
     return (
         <div className="catalog">
-            <div className="columns is-centered">
-                <div className="column is-6">
-                    {loading ? (
-                        <p>Loading...</p>
-                    ) : (
-                        <div className="products">
-                            {products.map((product, idx) => (
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <div className="products">
+                    <div className="columns is-multiline">
+                        {products.map((product, idx) => (
+                            <div className="column is-3">
                                 <div className="mb-4">
                                     <ProductCatalogItem key={idx} product={product} />
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

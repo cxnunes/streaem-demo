@@ -3,7 +3,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../services/constants";
 
 export type UploadProps = {
-    image: string;
+    image: string | null;
     setImage: (fileName: string) => void;
 };
 
